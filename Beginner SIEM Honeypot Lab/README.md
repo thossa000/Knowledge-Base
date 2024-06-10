@@ -70,5 +70,8 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
     </picture>
   </p>
   <li>Enable the Microsoft Defender plan for servers only as we are not working with any SQL servers in this lab.</li>
+  <li>After enabling the plan, select the Data Collection option on the left side of the page and set to store All Events.</li>
+  <li>Return to the Log Analytics workspace page in Azure and navigate to virtual machines under Workspace Data Sources.</li>
+  <li>Select the connect option at the top of the page to connect the VM to the workspace.</li>
 </ol>
   
