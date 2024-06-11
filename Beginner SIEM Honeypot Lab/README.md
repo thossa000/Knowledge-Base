@@ -78,14 +78,18 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
 <ol>
   <li>Navigate to the Virtual Machines page in Azure and select the honeypot VM. Gather the public IP address of the machine.</li>
   <li>Launch the Remote Desktop Connection app on your location machine and connect to the public IP of your VM on port 3389 (ie. 52.170.41.131:3389)</li>
-  <li>Use the admin credentials set during the creation of the VM to log in.</li><br>
-  <p>We will now load a script used to gather Windows Event security logs to gather information on the locations the attacks originate from. The script will grab all failed RDP login attempts on the VM and gather information on the location of the attack using https://ipgeolocation.io/, a free IP geolocation API. The script will receive the geolocation info from the service and store it in a log for our Log Analytics workspace to gather. This is required because the security logs in Event Viewer only display the IP address used by the attacker, and not their geographical information. Note that these locations may not be the real location of the attackers as VPNs can be used to mask the original IP/location of the attacker. However, this will help us in learning the IP addresses used to perform the attacks and visualize the concentration of attacks through a heatmap. Follow the steps below to setup the script for this lab:</p>
+  <li>Use the admin credentials set during the creation of the VM to log in.</li>
+</ol>
+<p>We will now load a script used to gather Windows Event security logs to gather information on the locations the attacks originate from. The script will grab all failed RDP login attempts on the VM and gather information on the location of the attack using https://ipgeolocation.io/, a free IP geolocation API. The script will receive the geolocation info from the service and store it in a log for our Log Analytics workspace to gather. This is required because the security logs in Event Viewer only display the IP address used by the attacker, and not their geographical information. Note that these locations may not be the real location of the attackers as VPNs can be used to mask the original IP/location of the attacker. However, this will help us in learning the IP addresses used to perform the attacks and visualize the concentration of attacks through a heatmap. Follow the steps below to setup the script for this lab:</p>
+<ol>
   <li>Download the script created by Josh Madakor here: https://github.com/joshmadakor1/Sentinel-Lab/blob/main/Custom_Security_Log_Exporter.ps1</li>
   <li>Copy the script to a convenient location on the honeypot VM.</li>
   <li>Create an account for https://ipgeolocation.io/ to receive your API key for the script.</li>
   <li>Open the script on the VM and paste in the API key. Also note the filepath of the logfile.</li>
-  <li>Close the editor and right click the script file, select Run with Powershell.</li><br>
-  <p>The failed_rdp.log file will now begin populating with all failed login attempts with information provided by the geolocation API and the VM’s Event Viewer. We must now create a custom log in our Log Analytics workspace that can bring in the information from failed_rdp.log into our workspace. Follow the steps below to create the custom log:</p>
+  <li>Close the editor and right click the script file, select Run with Powershell.</li>
+</ol>
+<p>The failed_rdp.log file will now begin populating with all failed login attempts with information provided by the geolocation API and the VM’s Event Viewer. We must now create a custom log in our Log Analytics workspace that can bring in the information from failed_rdp.log into our workspace. Follow the steps below to create the custom log:</p>
+<ol>
   <li>Copy the failed_rdp.log file from the VM onto your local machine.</li>
   <li>Navigate to Log Analytics Workspace page in Azure, select Custom Logs, and Add custom Log.</li>
   <li>Provide the file copied to your local machine as the sample. Check the Record delimiter page to confirm that the logs are displaying properly.</li>
