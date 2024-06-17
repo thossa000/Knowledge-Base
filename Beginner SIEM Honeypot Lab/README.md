@@ -68,8 +68,18 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
     </picture>
   </p>
   <li>Enable the Microsoft Defender plan for servers only as we are not working with any SQL servers in this lab.</li>
-  <li>After enabling the plan, select the Data Collection option on the left side of the page and set to store All Events.</li>
+    <p align="center">
+    <picture>
+      <img src=https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/EnableDefenderPlan.webp alt="Enable Defender Plan" width="80%" height="80%""> 
+    </picture>
+  </p>
+  <li>After enabling the plan, select the Data Collection option on the left side of the page and set it to store All Events.</li>
   <li>Return to the Log Analytics workspace page in Azure and navigate to virtual machines under Workspace Data Sources.</li>
+   <p align="center">
+    <picture>
+      <img src=https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/ConnectVMToLAW.webp alt="Connect VM to LAW" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Select the connect option at the top of the page to connect the VM to the workspace.</li>
 </ol>
 
@@ -77,18 +87,33 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
 <p>Once the virtual machine is connected to the workspace we will log into the VM to prepare the machine to be our honeypot. Follow the steps below to setup the VM.</p>
 <ol>
   <li>Navigate to the Virtual Machines page in Azure and select the honeypot VM. Gather the public IP address of the machine.</li>
+  <p align="center">
+    <picture>
+      <img src=https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/VMPublicIP.webp alt="Find VM Public IP Address" width="80%" height="80%""> 
+    </picture>
+  </p>
   <li>Launch the Remote Desktop Connection app on your location machine and connect to the public IP of your VM on port 3389 (ie. 52.170.41.131:3389)</li>
   <li>Use the admin credentials set during the creation of the VM to log in.</li>
 </ol>
-<p>We will now load a script used to gather Windows Event security logs to gather information on the locations the attacks originate from. The script will grab all failed RDP login attempts on the VM and gather information on the location of the attack using https://ipgeolocation.io/, a free IP geolocation API. The script will receive the geolocation info from the service and store it in a log for our Log Analytics workspace to gather. This is required because the security logs in Event Viewer only display the IP address used by the attacker, and not their geographical information. Note that these locations may not be the real location of the attackers as VPNs can be used to mask the original IP/location of the attacker. However, this will help us in learning the IP addresses used to perform the attacks and visualize the concentration of attacks through a heatmap. Follow the steps below to setup the script for this lab:</p>
+<p>We will now load a script used to gather Windows Event security logs to gather information on the locations the attacks originate from. The script will grab all failed RDP login attempts on the VM and gather information on the location of the attack using https://ipgeolocation.io/, a free IP geolocation API. The script will receive the geolocation info from the service and store it in a log for our Log Analytics workspace to gather. This is required because the security logs in Event Viewer only display the IP address used by the attacker, and not their geographical information. Note that these locations may not be the real location of the attackers as VPNs can be used to mask the original IP/location of the attacker. However, this will help us in learning the IP addresses used to perform the attacks and visualize the concentration of attacks through a heatmap. Follow the steps below to set up the script for this lab:</p>
 <ol>
   <li>Download the script created by Josh Madakor here: https://github.com/joshmadakor1/Sentinel-Lab/blob/main/Custom_Security_Log_Exporter.ps1</li>
   <li>Copy the script to a convenient location on the honeypot VM.</li>
   <li>Create an account for https://ipgeolocation.io/ to receive your API key for the script.</li>
-  <li>Open the script on the VM and paste in the API key. Also note the filepath of the logfile.</li>
+   <p align="center">
+    <picture>
+      <img src=https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/IPGeoAPIKey.webp alt="IPGeolocate API Key" width="75%" height="75%""> 
+    </picture>
+  </p>
+  <li>Open the script on the VM and paste in the API key. Also, note the file path of the logfile.</li>
+   <p align="center">
+    <picture>
+      <img src=https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/AddKeyToScript.webp alt="Add API Key to Script" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Close the editor and right click the script file, select Run with Powershell.</li>
 </ol>
-<p>The failed_rdp.log file will now begin populating with all failed login attempts with information provided by the geolocation API and the VM’s Event Viewer. We must now create a custom log in our Log Analytics workspace that can bring in the information from failed_rdp.log into our workspace. Follow the steps below to create the custom log:</p>
+<p>The failed_rdp.log file will now begin populating with all failed login attempts with the information provided by the geolocation API and the VM’s Event Viewer. We must now create a custom log in our Log Analytics workspace that can bring in the information from failed_rdp.log into our workspace. Follow the steps below to create the custom log:</p>
 <ol>
   <li>Copy the failed_rdp.log file from the VM onto your local machine.</li>
   <li>Navigate to Log Analytics Workspace page in Azure, select Custom Logs, and Add custom Log.</li>
