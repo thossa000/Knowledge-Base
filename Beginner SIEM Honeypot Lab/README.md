@@ -141,3 +141,6 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
   <li>Once fields are extracted for each data type, you will find each custom field under its tab as seen below:</li>
 </ol>
 <p>If you run the query another time after performing these steps, you will see that the rawdata for logs after we created our custom fields are categorized to the fields that were set. These fields will be used to create our Azure Sentinel Map.</p>
+
+<h3>Creating Azure Sentinel Heatmap of Login Attempts</h3>
+<p>After our custom log has been created with its fields, we will set up a new workbook in Azure Sentinel that will be used as our heatmap for the data being collected. The heatmap is a great tool to visualize the volume of attacks received by our honeypot with data on the location and IPs that the attacks originate from. Follow the steps below to create the Sentinel workbook:</p>
