@@ -130,5 +130,14 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
   <li>Check the results to ensure only latitude data is highlighted, if correct save extraction. Repeat these steps for each field.</li>
   <li>To fix incorrect results, select the icon in the top right of the result and correctly highlight the data for the field. If there are several incorrectly highlighted fields, this will help in correcting others as well.</li>
   <li>Once fields are extracted for each data type, you will find each custom field under its tab as seen below:</li><br>
-  <p>If you run the query another time after performing these steps, you will see that the rawdata for logs after we created our custom fields are categorized to the fields that were set. These fields will be used to create our Azure Sentinel Map.</p>
 </ol>
+<p>If you run the query another time after performing these steps, you will see that the rawdata for logs after we created our custom fields are categorized to the fields that were set. These fields will be used to create our Azure Sentinel Map.</p>
+<p>To extract the information from the raw data into custom fields, follow the steps below:</p>
+<ol>
+  <li>Select any of the lines shown from the results of querying FAILED_RDP_WITH_DEO_CL and click on the options and select “Extract Fields…” You will be brought to the custom fields page.</li>
+  <li>Highlight the first field of the rawdata, latitude, and provide it with a relevant title ie. LATITUDE_CF, set the Field Type accordingly. NOTE: Sample results will be shown which help with configuring the custom log.</li>
+  <li>Check the results to ensure only latitude data is highlighted, if correct save extraction. Repeat these steps for each field.</li>
+  <li>To fix incorrect results, select the icon in the top right of the result and correctly highlight the data for the field. If there are several incorrectly highlighted fields, this will help in correcting others as well.</li>
+  <li>Once fields are extracted for each data type, you will find each custom field under its tab as seen below:</li>
+</ol>
+<p>If you run the query another time after performing these steps, you will see that the rawdata for logs after we created our custom fields are categorized to the fields that were set. These fields will be used to create our Azure Sentinel Map.</p>
