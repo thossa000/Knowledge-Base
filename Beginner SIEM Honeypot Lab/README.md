@@ -116,22 +116,77 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
 <p>The failed_rdp.log file will now begin populating with all failed login attempts with the information provided by the geolocation API and the VM’s Event Viewer. We must now create a custom log in our Log Analytics workspace that can bring in the information from failed_rdp.log into our workspace. Follow the steps below to create the custom log:</p>
 <ol>
   <li>Copy the failed_rdp.log file from the VM onto your local machine.</li>
+   <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/14%20-%20Failed%20RDP%20Logins%20Log.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Navigate to Log Analytics Workspace page in Azure, select Custom Logs, and Add custom Log.</li>
+   <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/15%20-%20Add%20Custom%20Log%20to%20LAW.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Provide the file copied to your local machine as the sample. Check the Record delimiter page to confirm that the logs are displaying properly.</li>
   <li>Select next to the Collection paths page and provide the file path to the failed_rdp.log file on the honeypot VM.</li>
+   <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/16%20-%20Create%20Custom%20Log%20In%20LAW.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Select next to the Details page and provide a name for the custom log. We use FAILED_RDP_WITH_GEO_CL for this lab.</li>
   <li>Confirm settings and create the custom log.</li><br>
+   <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/17%20-%20Review%20and%20Create%20Custom%20Log.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
 </ol>
 <p>After giving a few minutes for the custom log to load, you can now run queries in Log Analytics workspace to view the information from the log. Typing in the name of the custom log will return the data from the log on the VM. We will need to extract the information from the raw data log to use in creating our map in Azure Sentinel.</p>
+<p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/18%20-%20Run%20Query%20On%20Failed_RDP%20logs.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
 <p>To extract the information from the raw data into custom fields, follow the steps below:</p>
 <ol>
   <li>Select any of the lines shown from the results of querying FAILED_RDP_WITH_DEO_CL and click on the options and select “Extract Fields…” You will be brought to the custom fields page.</li>
+  <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/19%20-%20Extract%20Fields%20from%20Failed_RDP.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Highlight the first field of the rawdata, latitude, and provide it with a relevant title ie. LATITUDE_CF, set the Field Type accordingly. NOTE: Sample results will be shown which help with configuring the custom log.</li>
+  <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/20%20-%20Extract%20Latitude%20Field.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Check the results to ensure only latitude data is highlighted, if correct save extraction. Repeat these steps for each field.</li>
+  <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/21%20-%20Confirm%20Field%20Values.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>To fix incorrect results, select the icon in the top right of the result and correctly highlight the data for the field. If there are several incorrectly highlighted fields, this will help in correcting others as well.</li>
-  <li>Once fields are extracted for each data type, you will find each custom field under its tab as seen below:</li><br>
+   <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/22%20-%20Fix%20Incorrect%20Matches.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
+  <li>Once fields are extracted for each data type, you will find each custom field under its tab as seen below:</li>
+   <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/23%20-%20Custom%20Fields%20List.webp" width="75%" height="75%""> 
+    </picture>
+  </p><br>
 </ol>
 <p>If you run the query another time after performing these steps, you will see that the rawdata for logs after we created our custom fields are categorized to the fields that were set. These fields will be used to create our Azure Sentinel Map.</p>
+ <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/24%20-%20Run%20Query%20to%20View%20Custom%20Fields.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
 <p>To extract the information from the raw data into custom fields, follow the steps below:</p>
 <ol>
   <li>Select any of the lines shown from the results of querying FAILED_RDP_WITH_DEO_CL and click on the options and select “Extract Fields…” You will be brought to the custom fields page.</li>
