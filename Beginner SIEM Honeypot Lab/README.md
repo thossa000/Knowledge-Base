@@ -197,6 +197,14 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
 </ol>
 <p>If you run the query another time after performing these steps, you will see that the rawdata for logs after we created our custom fields are categorized to the fields that were set. These fields will be used to create our Azure Sentinel Map.</p>
 
+<h3>Optional: Lowering Honeypot Security to Receive More Attacks</h3>
+<p>To receive as much data as possible, we can turn off the default firewall settings of our computer to make the VM more discoverable to external attackers that are scanning the web using ping and other methods. To do so, we must go back to the VM and follow the steps below:</p>
+<ul>
+  <li>Once logged in, navigate to Windows Firewall settings (type wf.msc in the search bar) and disable all firewalls. WARNING: ensure firewall is being disabled on the VM and not your local machine.</li>
+  <li>Launch Command Prompt from your local machine and ping the IP address of the VM to confirm that ICMP traffic is allowed.</li>
+</ul>
+<p>The VM is now far more susceptible to log in attacks, amongst other threats, which will be picked up by our script for our Log Analytics workspace to gather.</p>
+
 <h3>Creating Azure Sentinel Heatmap of Login Attempts</h3>
 <p>After our custom log has been created with its fields, we will set up a new workbook in Azure Sentinel that will be used as our heatmap for the data being collected. The heatmap is a great tool to visualize the volume of attacks received by our honeypot with data on the location and IPs that the attacks originate from. Follow the steps below to create the Sentinel workbook:</p>
 <ol>
