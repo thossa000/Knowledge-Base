@@ -199,3 +199,28 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
 
 <h3>Creating Azure Sentinel Heatmap of Login Attempts</h3>
 <p>After our custom log has been created with its fields, we will set up a new workbook in Azure Sentinel that will be used as our heatmap for the data being collected. The heatmap is a great tool to visualize the volume of attacks received by our honeypot with data on the location and IPs that the attacks originate from. Follow the steps below to create the Sentinel workbook:</p>
+<ol>
+  <li>Navigate to the Azure Sentinel page in Azure, select Workbooks from the list of options under Threat Management.</li>
+  <li>Select Add workbook, a new workbook will be created with a few default widgets, remove the widgets by clicking Edit at the top of the screen and selecting the remove option from the drop down of each widget.</li>
+  <li>Once the default widgets are removed, select Add query from the Add option at the top of the page.</li>
+  <li>Use the following query to retrieve the custom fields data of each log from our workspace that does not include incomplete/sample data:</li>
+
+```
+FAILED_RDP_WITH_GEO_CL
+|summarize event_count=count() by SOURCEHOST_CF, LATITUDE_CF, LONGITUDE_CF, COUNTRY_CF, LABEL_CF, DESTINATIONHOST_CF
+
+| where DESTINATIONHOST_CF != “samplehost”
+
+| where SOURCEHOST_CF != “”
+
+| where COUNTRY_CF != “”
+```
+<li>Set Visualization to Map and Size to Full to output the data to the desired format.</li>
+<li>Configure the Map Settings to use Latitude/Longitude data to correctly pin the attacks and set the size and aggression as seen below.</li>
+<li>Configure the Color and Metric settings to appropriately visualize the data by volume of attacks per location.</li>
+<li>Apply the new settings, you will now see a visual change in the map to represent the attacks with data of the attackers country and IP addresses.</li>
+<li>Change the name of the new workbook and save.</li>
+</ol>
+<p>We will now leave the VM running the script for a few hours to collect more attack logs. These can be viewed live from the VM as the Powershell window will display the log of each attack as it happens. The workbook can be viewed by navigating to Azure Sentinel and viewing “My Workbooks” in the workbook page.</p>
+
+
