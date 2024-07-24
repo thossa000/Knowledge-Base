@@ -209,7 +209,7 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
   <li>Launch Command Prompt from your local machine and ping the IP address of the VM to confirm that ICMP traffic is allowed.</li>
   <p align="center">
     <picture>
-      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/26%20-%20Check%20If%20Ping%20is%20Allowed.webp" width="75%" height="75%""> 
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/26%20-%20Check%20If%20Ping%20is%20Allowed.webp" width="40%" height="40%""> 
     </picture>
   </p>
 </ul>
@@ -240,5 +240,8 @@ FAILED_RDP_WITH_GEO_CL
 <li>Change the name of the new workbook and save.</li>
 </ol>
 <p>We will now leave the VM running the script for a few hours to collect more attack logs. These can be viewed live from the VM as the Powershell window will display the log of each attack as it happens. The workbook can be viewed by navigating to Azure Sentinel and viewing “My Workbooks” on the workbook page.</p>
+<p>In my lab, after waiting two days we received more then 30,000 failed RDP login attempts as seen below.</p>
+<p>The map provides us with a visual showing that a large majority of the attacks came from a source in Russia, likely a VPN connection. The number of attempts informs us that the attacks are performed by automated bots.</p>
 
+<h3>Conclusion</h3>
 
