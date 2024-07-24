@@ -7,8 +7,9 @@
   <br>
   <em>Diagram showing the layout of the tools used in this lab.</em>
 </p>
-<br>
-To begin the lab, we must sign up for an Azure account. At the time of writing this, Azure provides $200 of free credits to practice their services (https://azure.microsoft.com/).
+
+<p>To begin the lab, we must sign up for an Azure account. At the time of writing this, Azure provides $200 of free credits to practice their services (https://azure.microsoft.com/).</p>
+
 <h3>Creating Resource Group for the Lab</h3>
 <p>Once an account is created, you will be introduced to the home page. We will create a Resource Group container to hold all the resources needed in this lab. Next, find the Resource Group icon under Azure Services or use the search bar at the top.</p>
 <p align="center">
@@ -16,6 +17,7 @@ To begin the lab, we must sign up for an Azure account. At the time of writing t
     <img src=https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/1%20w4iWP195k6UJPF8ruQYwcw.webp alt="Azure Home Page"">
   </picture>
 </p>
+
 <p>Once on the Resource Group page, create a group with a relevant name to this lab and select the default region or the closest region to you.</p>
 <p align="center">
   <picture>
@@ -23,9 +25,10 @@ To begin the lab, we must sign up for an Azure account. At the time of writing t
   </picture>
 </p>
 <br>
+
 <h3>Creating a Honeypot VM</h3>
-After creating the Resource Group, we will navigate to the Virtual Machine page. Here we will create a Windows 10 VM that will be used as our honeypot for the lab.
-<br><br>
+<p>After creating the Resource Group, we will navigate to the Virtual Machine page. Here we will create a Windows 10 VM that will be used as our honeypot for the lab.</p>
+
  <ol>
   <li>Select the Honeypot Resource Group and choose a Windows 10 image with minimal size under Instance details.</li>
   <li>Set up an admin account with credentials you will remember.</li>
@@ -49,17 +52,19 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
   </p>
   <li>Once the network security group is set up, create the VM after reviewing all settings.</li> 
 </ol> 
+
 <h3>Setting up Log Analytics Workspace</h3>
-<p>Allow 5–20 minutes for the VM to complete setting up. During this time we will set up a Log Analytics workspace. This will be used to ingest logs collected from the VM. We will then use these logs to create custom logs containing geographic information. Log Analytics workspace will store these custom logs for Azure Sentinel where we will create a map to discover the location of the attacks.
-</p>
-<p>To begin, navigate to the Log Analytics workspace page and create a new workspace within the honeypot Resource Group as seen below:
-</p>
+<p>Allow 5–20 minutes for the VM to complete setting up. During this time we will set up a Log Analytics workspace. This will be used to ingest logs collected from the VM. We will then use these logs to create custom logs containing geographic information. Log Analytics workspace will store these custom logs for Azure Sentinel where we will create a map to discover the location of the attacks.</p>
+
+<p>To begin, navigate to the Log Analytics workspace page and create a new workspace within the honeypot Resource Group as seen below:</p>
 <p align="center">
       <picture>
         <img src=https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/Create%20LAW.webp alt="Log Analytics Workspace" width="70%" height="70%""> 
       </picture>
 </p>
+
 <p>Now that we have a Log Analytics workspace created, we will need to enable the ability to gather logs from the VM into the workspace. Follow the steps below to set up log gathering:</p>
+
 <ol>
   <li>Navigate to the Windows Defender for Cloud page and select the Log Analytics Workspace previously created:</li>
   <p align="center">
@@ -85,6 +90,7 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
 
 <h3>Setting Up Data Collection and Custom Log</h3>
 <p>Once the virtual machine is connected to the workspace we will log into the VM to prepare the machine to be our honeypot. Follow the steps below to setup the VM.</p>
+
 <ol>
   <li>Navigate to the Virtual Machines page in Azure and select the honeypot VM. Gather the public IP address of the machine.</li>
   <p align="center">
@@ -95,7 +101,9 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
   <li>Launch the Remote Desktop Connection app on your location machine and connect to the public IP of your VM on port 3389 (ie. 52.170.41.131:3389)</li>
   <li>Use the admin credentials set during the creation of the VM to log in.</li>
 </ol>
+
 <p>We will now load a script used to gather Windows Event security logs to gather information on the locations the attacks originate from. The script will grab all failed RDP login attempts on the VM and gather information on the location of the attack using https://ipgeolocation.io/, a free IP geolocation API. The script will receive the geolocation info from the service and store it in a log for our Log Analytics workspace to gather. This is required because the security logs in Event Viewer only display the IP address used by the attacker, and not their geographical information. Note that these locations may not be the real location of the attackers as VPNs can be used to mask the original IP/location of the attacker. However, this will help us in learning the IP addresses used to perform the attacks and visualize the concentration of attacks through a heatmap. Follow the steps below to set up the script for this lab:</p>
+
 <ol>
   <li>Download the script created by Josh Madakor here: https://github.com/joshmadakor1/Sentinel-Lab/blob/main/Custom_Security_Log_Exporter.ps1</li>
   <li>Copy the script to a convenient location on the honeypot VM.</li>
@@ -142,13 +150,16 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
     </picture>
   </p>
 </ol>
+
 <p>After giving a few minutes for the custom log to load, you can now run queries in Log Analytics workspace to view the information from the log. Typing in the name of the custom log will return the data from the log on the VM. We will need to extract the information from the raw data log to use in creating our map in Azure Sentinel.</p>
 <p align="center">
     <picture>
       <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/18%20-%20Run%20Query%20On%20Failed_RDP%20logs.webp" width="75%" height="75%""> 
     </picture>
   </p>
+  
 <p>To extract the information from the raw data into custom fields, follow the steps below:</p>
+
 <ol>
   <li>Select any of the lines shown from the results of querying FAILED_RDP_WITH_DEO_CL and click on the options and select “Extract Fields…” You will be brought to the custom fields page.</li>
   <p align="center">
@@ -187,7 +198,9 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
       <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/24%20-%20Run%20Query%20to%20View%20Custom%20Fields.webp" width="75%" height="75%""> 
     </picture>
   </p>
+  
 <p>To extract the information from the raw data into custom fields, follow the steps below:</p>
+
 <ol>
   <li>Select any of the lines shown from the results of querying FAILED_RDP_WITH_DEO_CL and click on the options and select “Extract Fields…” You will be brought to the custom fields page.</li>
   <li>Highlight the first field of the rawdata, latitude, and provide it with a relevant title ie. LATITUDE_CF, set the Field Type accordingly. NOTE: Sample results will be shown which help with configuring the custom log.</li>
@@ -195,10 +208,12 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
   <li>To fix incorrect results, select the icon in the top right of the result and correctly highlight the data for the field. If there are several incorrectly highlighted fields, this will help in correcting others as well.</li>
   <li>Once fields are extracted for each data type, you will find each custom field under its tab as seen below:</li>
 </ol>
+
 <p>If you run the query another time after performing these steps, you will see that the rawdata for logs after we created our custom fields are categorized to the fields that were set. These fields will be used to create our Azure Sentinel Map.</p>
 
 <h3>Optional: Lowering Honeypot Security to Receive More Attacks</h3>
 <p>To receive as much data as possible, we can turn off the default firewall settings of our computer to make the VM more discoverable to external attackers that are scanning the web using ping and other methods. To do so, we must go back to the VM and follow the steps below:</p>
+
 <ul>
   <li>Once logged in, navigate to Windows Firewall settings (type wf.msc in the search bar) and disable all firewalls. <br><b>WARNING:</b> Ensure the firewall is being disabled on the VM and not your local machine.</li>
    <p align="center">
@@ -206,6 +221,7 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
       <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/25%20-%20Turning%20Off%20HoneyPot%20Firewall.webp" width="75%" height="75%""> 
     </picture>
   </p>
+  
   <li>Launch Command Prompt from your local machine and ping the IP address of the VM to confirm that ICMP traffic is allowed.</li>
   <p align="center">
     <picture>
@@ -213,10 +229,13 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
     </picture>
   </p>
 </ul>
+
 <p>The VM is now far more susceptible to login attacks, amongst other threats, which will be picked up by our script for our Log Analytics workspace to gather.</p>
 
 <h3>Creating Azure Sentinel Heatmap of Login Attempts</h3>
+
 <p>After our custom log has been created with its fields, we will set up a new workbook in Azure Sentinel that will be used as our heatmap for the data being collected. The heatmap is a great tool for visualizing the volume of attacks received by our honeypot, with data on the location and IPs from which the attacks originate. Follow the steps below to create the Sentinel workbook:</p>
+
 <ol>
   <li>Navigate to the Azure Sentinel page in Azure, and select Workbooks from the list of options under Threat Management.</li>
   <li>Select Add workbook, a new workbook will be created with a few default widgets, remove the widgets by clicking Edit at the top of the screen and selecting the remove option from the drop-down of each widget.</li>
@@ -239,9 +258,27 @@ FAILED_RDP_WITH_GEO_CL
 <li>Apply the new settings, you will now see a visual change in the map to represent the attacks with data of the attacker's country and IP addresses.</li>
 <li>Change the name of the new workbook and save.</li>
 </ol>
+
 <p>We will now leave the VM running the script for a few hours to collect more attack logs. These can be viewed live from the VM as the Powershell window will display the log of each attack as it happens. The workbook can be viewed by navigating to Azure Sentinel and viewing “My Workbooks” on the workbook page.</p>
+
 <p>In my lab, after waiting two days we received more then 30,000 failed RDP login attempts as seen below.</p>
+
 <p>The map provides us with a visual showing that a large majority of the attacks came from a source in Russia, likely a VPN connection. The number of attempts informs us that the attacks are performed by automated bots.</p>
 
 <h3>Conclusion</h3>
+<p>In this lab, we created a free Azure account and took the steps to set up a honeypot to collect data on RDP brute force login attempts. This data was gathered through a script using a geolocation API to log data from the IP addresses of the attackers. The logs were queried in a Log Analytics workspace to gather relevant information which was then displayed in a heatmap in a Azure Sentinel Workbook.</p>
 
+<p>The information found from running the heatmap shows the importance of securing devices that are exposed to the public internet. The map shows the relentless attempts to gain access made by bots that discover an IP address. From viewing the rawdata, it also shows the importance of avoiding default credentials on all devices as we see that many of the attempts made by these attacks are using default admin credentials.</p>
+
+<p>There is always a risk to having devices public to the internet, however steps can be taken to mitigate these risks against threats like the attackers found in this lab.</p>
+
+<h3>Clean Up</h3>
+<p>In the start of the lab we created a Resource Group to place our VM, network security group, workspace, and other items inside. Once the lab is complete, it is recommended to delete the resource group to neatly deallocate and remove all resources to prevent any unwanted costs to accrue. To do so, follow the steps below:</p>
+
+<ol>
+  <li>Navigate to the Resource Group page.</li>
+  <li>Select the Resource Group used for the lab.</li>
+  <li>Click the Delete option and type in the name of the group, proceed to click the Delete option at the bottom of the page.</li>
+  <li>The resource group will take a few minutes to remove everything.</li>
+</ol>
+<p>Once complete, your Azure subscription will no longer be charged for the resources used in this lab and the remaining free credits can be spent elsewhere.</p>
