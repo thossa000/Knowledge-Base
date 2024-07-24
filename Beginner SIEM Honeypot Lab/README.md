@@ -200,16 +200,26 @@ After creating the Resource Group, we will navigate to the Virtual Machine page.
 <h3>Optional: Lowering Honeypot Security to Receive More Attacks</h3>
 <p>To receive as much data as possible, we can turn off the default firewall settings of our computer to make the VM more discoverable to external attackers that are scanning the web using ping and other methods. To do so, we must go back to the VM and follow the steps below:</p>
 <ul>
-  <li>Once logged in, navigate to Windows Firewall settings (type wf.msc in the search bar) and disable all firewalls. WARNING: ensure firewall is being disabled on the VM and not your local machine.</li>
+  <li>Once logged in, navigate to Windows Firewall settings (type wf.msc in the search bar) and disable all firewalls. <br><b>WARNING:</b> Ensure the firewall is being disabled on the VM and not your local machine.</li>
+   <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/25%20-%20Turning%20Off%20HoneyPot%20Firewall.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
   <li>Launch Command Prompt from your local machine and ping the IP address of the VM to confirm that ICMP traffic is allowed.</li>
+  <p align="center">
+    <picture>
+      <img src="https://github.com/thossa000/Knowledge-Base/blob/main/Beginner%20SIEM%20Honeypot%20Lab/images/26%20-%20Check%20If%20Ping%20is%20Allowed.webp" width="75%" height="75%""> 
+    </picture>
+  </p>
 </ul>
-<p>The VM is now far more susceptible to log in attacks, amongst other threats, which will be picked up by our script for our Log Analytics workspace to gather.</p>
+<p>The VM is now far more susceptible to login attacks, amongst other threats, which will be picked up by our script for our Log Analytics workspace to gather.</p>
 
 <h3>Creating Azure Sentinel Heatmap of Login Attempts</h3>
-<p>After our custom log has been created with its fields, we will set up a new workbook in Azure Sentinel that will be used as our heatmap for the data being collected. The heatmap is a great tool to visualize the volume of attacks received by our honeypot with data on the location and IPs that the attacks originate from. Follow the steps below to create the Sentinel workbook:</p>
+<p>After our custom log has been created with its fields, we will set up a new workbook in Azure Sentinel that will be used as our heatmap for the data being collected. The heatmap is a great tool for visualizing the volume of attacks received by our honeypot, with data on the location and IPs from which the attacks originate. Follow the steps below to create the Sentinel workbook:</p>
 <ol>
-  <li>Navigate to the Azure Sentinel page in Azure, select Workbooks from the list of options under Threat Management.</li>
-  <li>Select Add workbook, a new workbook will be created with a few default widgets, remove the widgets by clicking Edit at the top of the screen and selecting the remove option from the drop down of each widget.</li>
+  <li>Navigate to the Azure Sentinel page in Azure, and select Workbooks from the list of options under Threat Management.</li>
+  <li>Select Add workbook, a new workbook will be created with a few default widgets, remove the widgets by clicking Edit at the top of the screen and selecting the remove option from the drop-down of each widget.</li>
   <li>Once the default widgets are removed, select Add query from the Add option at the top of the page.</li>
   <li>Use the following query to retrieve the custom fields data of each log from our workspace that does not include incomplete/sample data:</li>
 
@@ -225,10 +235,10 @@ FAILED_RDP_WITH_GEO_CL
 ```
 <li>Set Visualization to Map and Size to Full to output the data to the desired format.</li>
 <li>Configure the Map Settings to use Latitude/Longitude data to correctly pin the attacks and set the size and aggression as seen below.</li>
-<li>Configure the Color and Metric settings to appropriately visualize the data by volume of attacks per location.</li>
-<li>Apply the new settings, you will now see a visual change in the map to represent the attacks with data of the attackers country and IP addresses.</li>
+<li>Configure the Color and Metric settings to visualize the data by volume of attacks per location appropriately.</li>
+<li>Apply the new settings, you will now see a visual change in the map to represent the attacks with data of the attacker's country and IP addresses.</li>
 <li>Change the name of the new workbook and save.</li>
 </ol>
-<p>We will now leave the VM running the script for a few hours to collect more attack logs. These can be viewed live from the VM as the Powershell window will display the log of each attack as it happens. The workbook can be viewed by navigating to Azure Sentinel and viewing “My Workbooks” in the workbook page.</p>
+<p>We will now leave the VM running the script for a few hours to collect more attack logs. These can be viewed live from the VM as the Powershell window will display the log of each attack as it happens. The workbook can be viewed by navigating to Azure Sentinel and viewing “My Workbooks” on the workbook page.</p>
 
 
